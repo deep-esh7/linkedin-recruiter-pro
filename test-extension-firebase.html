@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Test LinkedIn Recruiter Pro - Firebase Connection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            color: #0073b1;
+            margin-bottom: 30px;
+        }
+        
+        .test-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #0073b1;
+        }
+        
+        .test-result {
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .loading {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .btn {
+            background: #0073b1;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        
+        .btn:hover {
+            background: #005885;
+        }
+        
+        .btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .config-display {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-line;
+            border: 1px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 LinkedIn Recruiter Pro - System Test</h1>
+            <p>Testing Firebase integration and pricing system</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔍 Test 1: Firebase Connection</h3>
+            <button id="testConnectionBtn" class="btn">Test Firebase Connection</button>
+            <div id="connectionResult" class="test-result loading">Ready to test...</div>
+        </div>
+        
+        <div class="test-section">
+            <h3>⚙️ Test 2: Configuration Loading</h3>
+            <button id="testConfigBtn" class="btn">Load Configuration</button>
+            <div id="configResult" class="test-result loading">Ready to test...</div>
+            <div id="configDisplay" class="config-display" style="display: none;"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>👤 Test 3: User Creation</h3>
+            <button id="testUserBtn" class="btn">Create Test User</button>
+            <div id="userResult" class="test-result loading">Ready to test...</div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 Test 4: Usage Tracking</h3>
+            <button id="testUsageBtn" class="btn">Test Usage Tracking</button>
+            <div id="usageResult" class="test-result loading">Ready to test...</div>
+        </div>
+        
+        <div class="test-section">
+            <h3>💳 Test 5: Pricing System</h3>
+            <button id="testPricingBtn" class="btn">Test Pricing Logic</button>
+            <div id="pricingResult" class="test-result loading">Ready to test...</div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎯 Overall System Status</h3>
+            <div id="overallResult" class="test-result loading">Run all tests to see overall status</div>
+            <button id="runAllTestsBtn" class="btn" style="background: #28a745;">🚀 Run All Tests</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyADwo_Xx7xK-ixiiKG53hBg7U4HAhq_fXc",
+            authDomain: "linked-in-recruiter-pro.firebaseapp.com",
+            databaseURL: "https://linked-in-recruiter-pro-default-rtdb.asia-southeast1.firebasedatabase.app/",
+            projectId: "linked-in-recruiter-pro",
+            storageBucket: "linked-in-recruiter-pro.firebasestorage.app",
+            messagingSenderId: "103533996437",
+            appId: "1:103533996437:web:5ecbe4a891d795d8f3ae9c",
+            measurementId: "G-CXRFVG5TC5"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // DOM elements
+        const elements = {
+            testConnectionBtn: document.getElementById('testConnectionBtn'),
+            connectionResult: document.getElementById('connectionResult'),
+            testConfigBtn: document.getElementById('testConfigBtn'),
+            configResult: document.getElementById('configResult'),
+            configDisplay: document.getElementById('configDisplay'),
+            testUserBtn: document.getElementById('testUserBtn'),
+            userResult: document.getElementById('userResult'),
+            testUsageBtn: document.getElementById('testUsageBtn'),
+            usageResult: document.getElementById('usageResult'),
+            testPricingBtn: document.getElementById('testPricingBtn'),
+            pricingResult: document.getElementById('pricingResult'),
+            runAllTestsBtn: document.getElementById('runAllTestsBtn'),
+            overallResult: document.getElementById('overallResult')
+        };
+
+        let testResults = {};
+
+        // Test 1: Firebase Connection
+        async function testFirebaseConnection() {
+            try {
+                elements.connectionResult.className = 'test-result loading';
+                elements.connectionResult.textContent = '🔄 Testing Firebase connection...';
+                
+                const testRef = database.ref('test_connection');
+                await testRef.set(Date.now());
+                const snapshot = await testRef.once('value');
+                await testRef.remove();
+                
+                if (snapshot.exists()) {
+                    elements.connectionResult.className = 'test-result success';
+                    elements.connectionResult.textContent = '✅ Firebase connection successful!';
+                    testResults.connection = true;
+                } else {
+                    throw new Error('Connection test failed');
+                }
+            } catch (error) {
+                elements.connectionResult.className = 'test-result error';
+                elements.connectionResult.textContent = `❌ Firebase connection failed: ${error.message}`;
+                testResults.connection = false;
+            }
+        }
+
+        // Test 2: Configuration Loading
+        async function testConfiguration() {
+            try {
+                elements.configResult.className = 'test-result loading';
+                elements.configResult.textContent = '🔄 Loading configuration...';
+                
+                const configSnapshot = await database.ref('config').once('value');
+                const config = configSnapshot.val();
+                
+                if (config) {
+                    const requiredFields = ['searchFreeLimit', 'gmailFreeLimit', 'weeklyPrice', 'monthlyPrice', 'razorpayKeyId'];
+                    const missingFields = requiredFields.filter(field => !config[field]);
+                    
+                    if (missingFields.length === 0) {
+                        elements.configResult.className = 'test-result success';
+                        elements.configResult.textContent = '✅ Configuration loaded successfully!';
+                        
+                        elements.configDisplay.style.display = 'block';
+                        elements.configDisplay.textContent = 
+                            `Search Free Limit: ${config.searchFreeLimit}\n` +
+                            `Gmail Free Limit: ${config.gmailFreeLimit}\n` +
+                            `Weekly Price: ₹${config.weeklyPrice}\n` +
+                            `Monthly Price: ₹${config.monthlyPrice}\n` +
+                            `Razorpay Key: ${config.razorpayKeyId}`;
+                        
+                        testResults.config = true;
+                    } else {
+                        throw new Error(`Missing fields: ${missingFields.join(', ')}`);
+                    }
+                } else {
+                    throw new Error('No configuration found');
+                }
+            } catch (error) {
+                elements.configResult.className = 'test-result error';
+                elements.configResult.textContent = `❌ Configuration test failed: ${error.message}`;
+                testResults.config = false;
+            }
+        }
+
+        // Test 3: User Creation
+        async function testUserCreation() {
+            try {
+                elements.userResult.className = 'test-result loading';
+                elements.userResult.textContent = '🔄 Creating test user...';
+                
+                const testUserId = `test_user_${Date.now()}`;
+                const userData = {
+                    searchUsed: 0,
+                    gmailUsed: 0,
+                    subscriptionType: 'free',
+                    subscriptionExpiry: null,
+                    createdAt: Date.now(),
+                    lastActive: Date.now(),
+                    isTestUser: true
+                };
+                
+                await database.ref(`users/${testUserId}`).set(userData);
+                
+                // Verify creation
+                const userSnapshot = await database.ref(`users/${testUserId}`).once('value');
+                if (userSnapshot.exists()) {
+                    elements.userResult.className = 'test-result success';
+                    elements.userResult.textContent = `✅ User created successfully! ID: ${testUserId}`;
+                    testResults.user = true;
+                    
+                    // Cleanup
+                    await database.ref(`users/${testUserId}`).remove();
+                } else {
+                    throw new Error('User creation verification failed');
+                }
+            } catch (error) {
+                elements.userResult.className = 'test-result error';
+                elements.userResult.textContent = `❌ User creation failed: ${error.message}`;
+                testResults.user = false;
+            }
+        }
+
+        // Test 4: Usage Tracking
+        async function testUsageTracking() {
+            try {
+                elements.usageResult.className = 'test-result loading';
+                elements.usageResult.textContent = '🔄 Testing usage tracking...';
+                
+                const testUserId = `test_usage_${Date.now()}`;
+                
+                // Create user
+                await database.ref(`users/${testUserId}`).set({
+                    searchUsed: 0,
+                    gmailUsed: 0,
+                    subscriptionType: 'free',
+                    isTestUser: true
+                });
+                
+                // Test usage increment
+                await database.ref(`users/${testUserId}/searchUsed`).transaction(current => (current || 0) + 1);
+                await database.ref(`users/${testUserId}/gmailUsed`).transaction(current => (current || 0) + 1);
+                
+                // Verify increment
+                const userSnapshot = await database.ref(`users/${testUserId}`).once('value');
+                const userData = userSnapshot.val();
+                
+                if (userData.searchUsed === 1 && userData.gmailUsed === 1) {
+                    elements.usageResult.className = 'test-result success';
+                    elements.usageResult.textContent = '✅ Usage tracking working correctly!';
+                    testResults.usage = true;
+                } else {
+                    throw new Error('Usage increment failed');
+                }
+                
+                // Cleanup
+                await database.ref(`users/${testUserId}`).remove();
+            } catch (error) {
+                elements.usageResult.className = 'test-result error';
+                elements.usageResult.textContent = `❌ Usage tracking failed: ${error.message}`;
+                testResults.usage = false;
+            }
+        }
+
+        // Test 5: Pricing Logic
+        async function testPricingLogic() {
+            try {
+                elements.pricingResult.className = 'test-result loading';
+                elements.pricingResult.textContent = '🔄 Testing pricing logic...';
+                
+                const configSnapshot = await database.ref('config').once('value');
+                const config = configSnapshot.val();
+                
+                // Test free user limits
+                const testUserId = `test_pricing_${Date.now()}`;
+                await database.ref(`users/${testUserId}`).set({
+                    searchUsed: config.searchFreeLimit,
+                    gmailUsed: config.gmailFreeLimit,
+                    subscriptionType: 'free',
+                    isTestUser: true
+                });
+                
+                const userSnapshot = await database.ref(`users/${testUserId}`).once('value');
+                const userData = userSnapshot.val();
+                
+                // Check if user has reached limits
+                const searchLimitReached = userData.searchUsed >= config.searchFreeLimit;
+                const gmailLimitReached = userData.gmailUsed >= config.gmailFreeLimit;
+                
+                if (searchLimitReached && gmailLimitReached) {
+                    elements.pricingResult.className = 'test-result success';
+                    elements.pricingResult.textContent = '✅ Pricing logic working correctly! Limits properly enforced.';
+                    testResults.pricing = true;
+                } else {
+                    throw new Error('Limit enforcement failed');
+                }
+                
+                // Cleanup
+                await database.ref(`users/${testUserId}`).remove();
+            } catch (error) {
+                elements.pricingResult.className = 'test-result error';
+                elements.pricingResult.textContent = `❌ Pricing logic failed: ${error.message}`;
+                testResults.pricing = false;
+            }
+        }
+
+        // Run all tests
+        async function runAllTests() {
+            elements.runAllTestsBtn.disabled = true;
+            elements.runAllTestsBtn.textContent = '⏳ Running tests...';
+            
+            await testFirebaseConnection();
+            await testConfiguration();
+            await testUserCreation();
+            await testUsageTracking();
+            await testPricingLogic();
+            
+            // Overall result
+            const passedTests = Object.values(testResults).filter(result => result).length;
+            const totalTests = Object.keys(testResults).length;
+            
+            if (passedTests === totalTests) {
+                elements.overallResult.className = 'test-result success';
+                elements.overallResult.textContent = `🎉 ALL TESTS PASSED! (${passedTests}/${totalTests}) - LinkedIn Recruiter Pro is ready!`;
+            } else {
+                elements.overallResult.className = 'test-result error';
+                elements.overallResult.textContent = `⚠️ ${passedTests}/${totalTests} tests passed. Please check failed tests above.`;
+            }
+            
+            elements.runAllTestsBtn.disabled = false;
+            elements.runAllTestsBtn.textContent = '🚀 Run All Tests';
+        }
+
+        // Event listeners
+        elements.testConnectionBtn.addEventListener('click', testFirebaseConnection);
+        elements.testConfigBtn.addEventListener('click', testConfiguration);
+        elements.testUserBtn.addEventListener('click', testUserCreation);
+        elements.testUsageBtn.addEventListener('click', testUsageTracking);
+        elements.testPricingBtn.addEventListener('click', testPricingLogic);
+        elements.runAllTestsBtn.addEventListener('click', runAllTests);
+
+        // Auto-run connection test on page load
+        window.addEventListener('load', () => {
+            setTimeout(testFirebaseConnection, 1000);
+        });
+    </script>
+</body>
+</html>

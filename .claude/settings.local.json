@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node test-firebase-script.js)",
+      "Bash(node -c popup.js)",
+      "Bash(node -c firebase-local.js)",
+      "Bash(node -c razorpay-wrapper.js)",
+      "Bash(node -c pricing-manager.js)",
+      "Bash(node -c content.js)",
+      "Bash(node -c background.js)",
+      "Bash(node -e \"JSON.parse(require(''fs'').readFileSync(''manifest.json'', ''utf8'')); console.log(''✅ manifest.json is valid JSON'')\")",
+      "Bash(node debug-firebase.js)",
+      "Bash(node test-pricing.js)",
+      "Bash(node direct-firebase-test.js)",
+      "Bash(curl -s \"https://linked-in-recruiter-pro-default-rtdb.asia-southeast1.firebasedatabase.app/users.json\")",
+      "Bash(curl -s \"https://linked-in-recruiter-pro-default-rtdb.asia-southeast1.firebasedatabase.app/config.json\")",
+      "Bash(curl -s \"https://linked-in-recruiter-pro-default-rtdb.asia-southeast1.firebasedatabase.app/analytics.json\")",
+      "Bash(curl -X PUT \"https://linked-in-recruiter-pro-default-rtdb.asia-southeast1.firebasedatabase.app/users/test_user.json\" -d '{\"\"searchUsed\"\":0,\"\"gmailUsed\"\":0,\"\"subscriptionType\"\":\"\"free\"\"}')",
+      "Bash(curl -s \"https://linked-in-recruiter-pro-default-rtdb.asia-southeast1.firebasedatabase.app/users/test_user.json\")",
+      "Bash(node test-user-creation.js)",
+      "Bash(node test-email-permission.js)",
+      "Bash(node test-session-charging.js)",
+      "Bash(node test-double-charge-fix.js)",
+      "Bash(node test-razorpay.js)",
+      "Bash(node test-payment-flow.js)",
+      "Bash(git init)",
+      "Bash(git remote add origin https://github.com/deep-esh7/linkedin-recruiter-pro.git)",
+      "Bash(git add .)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

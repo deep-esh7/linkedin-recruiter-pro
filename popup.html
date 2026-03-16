@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>LinkedIn Recruiter Pro</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>📧 LinkedIn Recruiter Pro</h2>
+      <div class="stats">
+        <span id="emailCount">0 emails found</span>
+      </div>
+      <div class="usage-stats">
+        <div class="usage-item">
+          <span id="searchUsage">Loading...</span>
+        </div>
+        <div class="usage-item">
+          <span id="gmailUsage">Loading...</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="tab-container">
+      <div class="tabs">
+        <button class="tab-button active" data-tab="search">🔍 Search & Extract</button>
+        <button class="tab-button" data-tab="gmail">📧 Gmail Automation</button>
+        <button class="tab-button" data-tab="pricing">💎 Upgrade</button>
+      </div>
+
+      <div id="searchTab" class="tab-content active">
+        <div class="search-section">
+          <h3>🚀 LinkedIn Search</h3>
+          <div class="search-controls">
+            <input type="text" id="searchKeywords" placeholder="Enter search keywords (e.g., flutter jobs)" value="flutter jobs">
+            
+            <select id="dateFilter">
+              <option value="past-24h">Last 24 hours</option>
+              <option value="past-week" selected>Last 7 days</option>
+              <option value="past-month">Last 30 days</option>
+            </select>
+            
+            <button id="startSearchBtn" class="btn btn-search">🚀 Start Search & Auto-Scroll</button>
+          </div>
+        </div>
+        
+        <div class="controls">
+          <button id="autoScrollBtn" class="btn btn-auto">Start Auto-Scroll (Current Page)</button>
+        </div>
+        
+        <div class="controls">
+          <button id="clearBtn" class="btn btn-secondary">Clear All</button>
+          <button id="copyAllBtn" class="btn btn-primary">Copy All</button>
+          <button id="exportBtn" class="btn btn-export">📥 Export CSV</button>
+        </div>
+        
+        <div class="manual-email-section">
+          <h3>➕ Add Emails Manually</h3>
+          <div class="manual-controls">
+            <textarea id="manualEmails" placeholder="Add emails manually (one per line or comma separated)&#10;Example:&#10;john@example.com&#10;jane@company.com, bob@test.com" rows="3"></textarea>
+            <div class="manual-buttons">
+              <button id="addEmailsBtn" class="btn btn-add">➕ Add Emails</button>
+              <button id="importFileBtn" class="btn btn-import">📄 Import File</button>
+              <button id="clearAllEmailsBtn" class="btn btn-secondary">🗑️ Clear All</button>
+            </div>
+            <input type="file" id="importEmailFile" accept=".txt,.csv" style="display: none;">
+            <div id="addEmailsStatus" class="add-status"></div>
+          </div>
+        </div>
+
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search emails...">
+          <button id="debugBtn" class="btn btn-secondary" style="margin-top: 8px; width: 100%; font-size: 11px;">🔍 Debug Storage</button>
+        </div>
+        
+        <div id="emailList" class="email-list">
+          <div class="no-emails">No emails found yet. Start scrolling on LinkedIn!</div>
+        </div>
+      </div>
+
+      <div id="gmailTab" class="tab-content">
+        <div class="gmail-section">
+          <div class="section-header">
+            <h3>📧 Gmail Automation</h3>
+            <button id="settingsBtn" class="settings-btn" title="OAuth Settings">⚙️</button>
+          </div>
+          
+          <div id="oauthSettings" class="oauth-settings" style="display: none;">
+            <div class="settings-header">
+              <h4>🔐 OAuth Configuration</h4>
+              <button id="closeSettingsBtn" class="close-btn">✖️</button>
+            </div>
+            <div class="settings-content">
+              <label for="clientIdInput">Gmail OAuth Client ID:</label>
+              <input type="text" id="clientIdInput" placeholder="Enter your OAuth Client ID" class="oauth-input">
+              <div class="current-key">
+                <strong>Current Key:</strong> <span id="currentClientId"></span>
+              </div>
+              <div class="settings-buttons">
+                <button id="testOAuthBtn" class="btn btn-secondary">🧪 Test Connection</button>
+                <button id="applyOAuthBtn" class="btn btn-primary">💾 Apply & Save</button>
+              </div>
+              <div id="oauthStatus" class="oauth-status"></div>
+              <div class="oauth-help">
+                <small>
+                  <strong>How to get OAuth Client ID:</strong><br>
+                  1. Go to <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a><br>
+                  2. Create/select project → Enable Gmail API<br>
+                  3. Create OAuth 2.0 credentials<br>
+                  4. Copy Client ID here
+                </small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="gmail-controls">
+            <input type="text" id="emailSubject" placeholder="Email Subject (e.g., Job Application - Flutter Developer)" value="Job Application">
+            
+            <textarea id="emailMessage" placeholder="Enter your email message..." rows="4">Dear Hiring Manager,
+
+I hope this email finds you well. I am writing to express my interest in the opportunities available at your company.
+
+I have relevant experience and would love to contribute to your team. Please find my resume attached for your consideration.
+
+Looking forward to hearing from you.
+
+Best regards,
+[Your Name]</textarea>
+            
+            <div class="file-upload">
+              <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" style="display: none;">
+              <button id="selectFileBtn" class="btn btn-secondary">📎 Select Resume</button>
+              <span id="fileName">No file selected</span>
+            </div>
+            
+            <div class="oauth-section">
+              <button id="authenticateBtn" class="btn btn-oauth">🔐 Connect Gmail Account</button>
+              <span id="authStatus">Not connected</span>
+            </div>
+            
+            <div class="scheduling-section">
+              <h4>⏰ Schedule Sending</h4>
+              <div class="schedule-controls">
+                <label>
+                  <input type="radio" name="sendTime" value="now" checked> Send Now
+                </label>
+                <label>
+                  <input type="radio" name="sendTime" value="scheduled"> Schedule for later
+                </label>
+                
+                <div id="scheduleDateTime" class="schedule-datetime" style="display: none;">
+                  <input type="date" id="scheduleDate" min="">
+                  <input type="time" id="scheduleTime">
+                  <select id="scheduleTimezone">
+                    <option value="local">Local Time</option>
+                    <option value="UTC">UTC</option>
+                  </select>
+                </div>
+                
+                <div class="schedule-presets">
+                  <button class="btn btn-preset" data-hours="1">+1 Hour</button>
+                  <button class="btn btn-preset" data-hours="6">+6 Hours</button>
+                  <button class="btn btn-preset" data-hours="24">Tomorrow</button>
+                </div>
+                
+                <div id="scheduleStatus" class="schedule-status"></div>
+              </div>
+            </div>
+            
+            <div class="sending-status">
+              <div class="status-info">
+                <span id="sentCount">Sent: 0</span> | <span id="remainingCount">Remaining: 0</span>
+              </div>
+              <div class="progress-info">
+                <div id="progressBar" class="progress-bar">
+                  <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <span id="currentEmail">Ready to send</span>
+              </div>
+              <button id="startSendingBtn" class="btn btn-gmail" disabled>🚀 Start Automatic Sending</button>
+              <button id="stopSendingBtn" class="btn btn-secondary" style="display: none;">⏹️ Stop Sending</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pricingTab" class="tab-content">
+        <div class="pricing-section">
+          <h3>💎 Upgrade to Premium</h3>
+          
+          <div class="current-limits">
+            <h4>📊 Current Usage Limits (Free Plan)</h4>
+            <div class="limits-grid">
+              <div class="limit-item">
+                <span class="limit-icon">🔍</span>
+                <span>Search Extractions: <strong id="searchLimit">10</strong></span>
+              </div>
+              <div class="limit-item">
+                <span class="limit-icon">📧</span>
+                <span>Email Automation: <strong id="gmailLimit">5</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="subscription-status" id="subscriptionStatus">
+            <div class="status-free">
+              <h4>🆓 Free Plan Active</h4>
+              <p>Upgrade for unlimited access to all features</p>
+            </div>
+          </div>
+
+          <div class="pricing-plans">
+            <div class="plan-card">
+              <div class="plan-header">
+                <h4>⚡ Weekly Premium</h4>
+                <div class="plan-price">₹<span id="weeklyPrice">499</span></div>
+                <small>for 7 days</small>
+              </div>
+              <div class="plan-features">
+                <div class="feature">✅ Unlimited Search Extractions</div>
+                <div class="feature">✅ Unlimited Email Automation</div>
+                <div class="feature">✅ Enhanced Data Collection</div>
+                <div class="feature">✅ Priority Support</div>
+              </div>
+              <button id="weeklyPlanBtn" class="btn btn-plan">Choose Weekly Plan</button>
+            </div>
+
+            <div class="plan-card popular">
+              <div class="plan-badge">🔥 Most Popular</div>
+              <div class="plan-header">
+                <h4>🚀 Monthly Premium</h4>
+                <div class="plan-price">₹<span id="monthlyPrice">1499</span></div>
+                <small>for 30 days</small>
+              </div>
+              <div class="plan-features">
+                <div class="feature">✅ Everything in Weekly</div>
+                <div class="feature">✅ Advanced Analytics</div>
+                <div class="feature">✅ Custom Templates</div>
+                <div class="feature">✅ Dedicated Support</div>
+              </div>
+              <button id="monthlyPlanBtn" class="btn btn-plan-popular">Choose Monthly Plan</button>
+            </div>
+          </div>
+
+          <div class="upgrade-benefits">
+            <h4>🎯 Why Upgrade?</h4>
+            <div class="benefits-list">
+              <div class="benefit">🚀 Scale your recruitment efforts</div>
+              <div class="benefit">⏰ Save hours of manual work</div>
+              <div class="benefit">📈 Increase your response rates</div>
+              <div class="benefit">🎯 Target better candidates</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing Modal -->
+    <div id="pricingModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>💎 Upgrade Required</h3>
+          <span id="closePricingModal" class="close-modal">×</span>
+        </div>
+        <div class="modal-body">
+          <p>You've reached your free usage limit. Upgrade to continue using all features!</p>
+          <div class="modal-plans">
+            <button id="modalWeeklyBtn" class="btn btn-plan">Weekly ₹<span id="modalWeeklyPrice">499</span></button>
+            <button id="modalMonthlyBtn" class="btn btn-plan-popular">Monthly ₹<span id="modalMonthlyPrice">1499</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <small>LinkedIn Recruiter Pro - Email Extraction & Automation<br>
+      LinkedIn: Ctrl+Shift+S (scroll), Ctrl+Shift+E (scan)<br>
+      Manual: Ctrl+Enter (add emails), Import TXT/CSV files<br>
+      Gmail: Ctrl+Shift+A (attach), Ctrl+Shift+Enter (send)</small>
+    </div>
+  </div>
+  
+  <!-- Local Firebase Manager -->
+  <script src="firebase-local.js"></script>
+  <script src="razorpay-wrapper.js"></script>
+  <script src="pricing-manager.js"></script>
+  <script src="gmail-oauth.js"></script>
+  <script src="scheduler.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

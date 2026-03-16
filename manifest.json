@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "LinkedIn Recruiter Pro",
+  "version": "1.0",
+  "description": "Extract emails from LinkedIn posts and automate recruitment outreach",
+  "permissions": [
+    "storage",
+    "activeTab", 
+    "tabs",
+    "scripting",
+    "identity",
+    "alarms",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://www.linkedin.com/*",
+    "https://mail.google.com/*",
+    "https://*.googleapis.com/*",
+    "https://*.firebaseio.com/*",
+    "https://*.firebasedatabase.app/*",
+    "https://checkout.razorpay.com/*",
+    "https://www.gstatic.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.linkedin.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["gmail-content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "LinkedIn Recruiter Pro"
+  },
+  "oauth2": {
+    "client_id": "945873930122-qqqov98l0kuagvi52f5fs7tti7f6vslj.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/gmail.send"
+    ]
+  }
+}

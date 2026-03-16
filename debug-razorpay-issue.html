@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Razorpay Debug Test</title>
+</head>
+<body>
+    <h1>Razorpay Debug Test</h1>
+    <button id="testBtn">Test Razorpay Loading</button>
+    <div id="output"></div>
+    
+    <script>
+        function log(message) {
+            const output = document.getElementById('output');
+            output.innerHTML += '<div>' + new Date().toLocaleTimeString() + ': ' + message + '</div>';
+            console.log(message);
+        }
+        
+        document.getElementById('testBtn').addEventListener('click', async () => {
+            log('🧪 Starting Razorpay test...');
+            
+            // Test 1: Try to load the script directly
+            log('📜 Test 1: Loading Razorpay script...');
+            const script = document.createElement('script');
+            script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            
+            script.onload = () => {
+                log('✅ Script loaded successfully');
+                log('📜 window.Razorpay available: ' + !!window.Razorpay);
+                
+                if (window.Razorpay) {
+                    log('🔧 Testing Razorpay instantiation...');
+                    try {
+                        const rzp = new window.Razorpay({
+                            key: 'rzp_test_key',
+                            amount: 50000,
+                            currency: 'INR',
+                            name: 'Test',
+                            description: 'Test payment',
+                            handler: function(response) {
+                                log('✅ Payment handler called: ' + response.razorpay_payment_id);
+                            }
+                        });
+                        log('✅ Razorpay instance created successfully');
+                    } catch (error) {
+                        log('❌ Razorpay instantiation failed: ' + error.message);
+                    }
+                }
+            };
+            
+            script.onerror = (error) => {
+                log('❌ Script loading failed: ' + error);
+                log('❌ This could be due to CSP or network issues');
+            };
+            
+            document.head.appendChild(script);
+        });
+    </script>
+</body>
+</html>

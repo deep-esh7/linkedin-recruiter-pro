@@ -1,0 +1,61 @@
+🔐 OAuth Configuration Change Instructions
+================================================
+
+If you need to change OAuth credentials in the future, you need to update these 2 files:
+
+📁 FILE 1: manifest.json
+------------------------
+Location: /Users/user/Downloads/extention/manifest.json
+Lines to change: 38-42
+
+Current:
+  "oauth2": {
+    "client_id": "945873930122-qqqov98l0kuagvi52f5fs7tti7f6vslj.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/gmail.send"
+    ]
+  }
+
+Change: Replace the client_id with your new OAuth client ID
+
+📁 FILE 2: gmail-oauth.js  
+-------------------------
+Location: /Users/user/Downloads/extention/gmail-oauth.js
+Lines to change: Around line 2-4
+
+Current:
+  constructor() {
+    this.clientId = '945873930122-qqqov98l0kuagvi52f5fs7tti7f6vslj.apps.googleusercontent.com';
+    
+Change: Replace the clientId value with your new OAuth client ID
+
+🔄 Steps to Change OAuth:
+========================
+1. Open manifest.json file
+2. Find line with "client_id" (around line 39)
+3. Replace the long client ID string with your new one
+4. Save manifest.json
+
+5. Open gmail-oauth.js file  
+6. Find line with "this.clientId =" (around line 3)
+7. Replace the client ID string with the same new one
+8. Save gmail-oauth.js
+
+9. Reload the extension in Chrome:
+   - Go to chrome://extensions/
+   - Click reload button on "LinkedIn Email Extractor"
+   - Test OAuth connection
+
+⚠️ IMPORTANT NOTES:
+==================
+- Both files MUST have the SAME client ID
+- Keep the .apps.googleusercontent.com part
+- Don't change the scopes unless you need different permissions
+- After changing, you may need to re-authenticate in the extension
+
+🎯 Example of what to change:
+============================
+OLD: "945873930122-qqqov98l0kuagvi52f5fs7tti7f6vslj.apps.googleusercontent.com"
+NEW: "YOUR-NEW-CLIENT-ID-HERE.apps.googleusercontent.com"
+
+Replace "YOUR-NEW-CLIENT-ID-HERE" with your actual new OAuth client ID.

@@ -1,0 +1,57 @@
+{
+  "rules": {
+    "config": {
+      ".read": true,
+      ".write": false
+    },
+    "users": {
+      "$userId": {
+        ".read": true,
+        ".write": true
+      }
+    },
+    "analytics": {
+      "$path": {
+        ".read": true,
+        ".write": true
+      }
+    },
+    "usage": {
+      "$userId": {
+        ".read": true,
+        ".write": true
+      }
+    },
+    "sessions": {
+      "$sessionId": {
+        ".read": true,
+        ".write": true
+      }
+    },
+    "payments": {
+      "$paymentId": {
+        ".read": true,
+        ".write": true
+      }
+    }
+  }
+}
+
+/* 
+Firebase Console mein yeh steps follow karo:
+
+1. https://console.firebase.google.com/ pe jao
+2. Apna project select karo (linked-in-recruiter-pro)
+3. Left menu mein "Realtime Database" click karo
+4. "Rules" tab click karo
+5. Upar wala JSON copy-paste karo
+6. "Publish" button click karo
+
+Yeh rules allow karenge:
+- config: READ only (admin settings)
+- users: READ/WRITE (user data)  
+- analytics: READ/WRITE (usage tracking)
+- usage: READ/WRITE (usage stats)
+- sessions: READ/WRITE (session data)
+- payments: READ/WRITE (payment records)
+*/

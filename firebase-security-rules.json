@@ -1,0 +1,38 @@
+{
+  "rules": {
+    "config": {
+      ".read": true,
+      ".write": false
+    },
+    "users": {
+      "$userId": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        "searchUsed": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "gmailUsed": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "subscriptionType": {
+          ".validate": "newData.isString() && (newData.val() == 'free' || newData.val() == 'premium')"
+        }
+      }
+    },
+    "payments": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$paymentId": {
+        ".validate": "newData.hasChildren(['userId', 'paymentId', 'amount', 'timestamp', 'status'])"
+      }
+    },
+    "analytics": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    "admin": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
+}

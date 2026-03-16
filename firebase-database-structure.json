@@ -1,0 +1,120 @@
+{
+  "config": {
+    "searchFreeLimit": 10,
+    "gmailFreeLimit": 5,
+    "weeklyPrice": 499,
+    "monthlyPrice": 1499,
+    "razorpayKeyId": "rzp_live_Rsmpg2dDv0X1KT",
+    "razorpaySecretKey": "naxBQ2qaAFkc36FZylpaqCUd",
+    "features": {
+      "unlimited_search": true,
+      "unlimited_gmail": true,
+      "premium_support": true,
+      "advanced_filters": true
+    },
+    "updatedAt": 1703123456789
+  },
+  "users": {
+    "chrome_extension_id_123456789_abc123": {
+      "searchUsed": 3,
+      "gmailUsed": 1,
+      "subscriptionType": "free",
+      "subscriptionExpiry": null,
+      "createdAt": 1703123456789,
+      "lastActive": 1703123456789,
+      "deviceInfo": {
+        "chromeVersion": "120.0.0.0",
+        "os": "Windows",
+        "extensionVersion": "1.0"
+      }
+    },
+    "chrome_extension_id_987654321_xyz789": {
+      "searchUsed": 25,
+      "gmailUsed": 12,
+      "subscriptionType": "premium",
+      "subscriptionExpiry": 1703209856789,
+      "createdAt": 1703037056789,
+      "lastActive": 1703123456789,
+      "lastPayment": 1703037056789,
+      "planType": "monthly",
+      "deviceInfo": {
+        "chromeVersion": "120.0.0.0",
+        "os": "Mac",
+        "extensionVersion": "1.0"
+      }
+    }
+  },
+  "payments": {
+    "payment_1703123456789_abc": {
+      "userId": "chrome_extension_id_987654321_xyz789",
+      "paymentId": "pay_1234567890",
+      "orderId": "order_1234567890",
+      "signature": "signature_hash_here",
+      "planType": "monthly",
+      "amount": 1499,
+      "timestamp": 1703037056789,
+      "status": "completed",
+      "razorpayResponse": {
+        "razorpay_payment_id": "pay_1234567890",
+        "razorpay_order_id": "order_1234567890",
+        "razorpay_signature": "signature_hash_here"
+      }
+    }
+  },
+  "analytics": {
+    "daily": {
+      "2024-01-15": {
+        "totalUsers": 150,
+        "newUsers": 25,
+        "searchUsage": 850,
+        "gmailUsage": 320,
+        "revenue": 12475,
+        "activeSubscriptions": 45
+      },
+      "2024-01-16": {
+        "totalUsers": 175,
+        "newUsers": 30,
+        "searchUsage": 920,
+        "gmailUsage": 380,
+        "revenue": 15970,
+        "activeSubscriptions": 52
+      }
+    },
+    "totals": {
+      "totalUsers": 175,
+      "totalRevenue": 28445,
+      "totalSearches": 15670,
+      "totalEmails": 8920,
+      "activeSubscriptions": 52,
+      "lastUpdated": 1703123456789
+    }
+  },
+  "admin": {
+    "settings": {
+      "maintenanceMode": false,
+      "newUserRegistration": true,
+      "paymentEnabled": true,
+      "notificationMessage": "Welcome to LinkedIn Recruiter Pro!",
+      "supportEmail": "support@linkedinrecruiterpro.com"
+    },
+    "logs": {
+      "config_changes": {
+        "1703123456789": {
+          "admin": "admin_user_123",
+          "action": "updated_pricing",
+          "changes": {
+            "weeklyPrice": {
+              "from": 399,
+              "to": 499
+            },
+            "monthlyPrice": {
+              "from": 1299,
+              "to": 1499
+            }
+          },
+          "timestamp": 1703123456789
+        }
+      }
+    }
+  }
+}
