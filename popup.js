@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const closePricingModal = document.getElementById('closePricingModal');
   const startSendingBtn = document.getElementById('startSendingBtn');
   const authenticateBtn = document.getElementById('authenticateBtn');
+  const settingsBtn = document.getElementById('settingsBtn');
+  const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+  const settingsModal = document.getElementById('settingsModal');
   
   let allEmails = [];
   let isAutoScrolling = false;
@@ -303,29 +306,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Search functionality with usage tracking
-  if (startSearchBtn) {
-    startSearchBtn.addEventListener('click', async function() {
-      const keywords = searchKeywords.value.trim();
-      const dateValue = dateFilter.value;
-      
-      if (!keywords) {
-        alert('Please enter search keywords!');
-        return;
-      }
-      
-      // Check usage limits before proceeding
-      if (pricingManager) {
-        console.log('🔍 Checking search usage limits...');
-        await pricingManager.checkUsageAndProceed('search', () => {
-          executeSearch(keywords, dateValue);
-        });
-      } else {
-        console.log('⚠️ No pricing manager, proceeding with search...');
-        executeSearch(keywords, dateValue);
-      }
-    });
-  }
   
   // Extract search execution to separate function
   function executeSearch(keywords, dateValue) {
@@ -671,6 +651,79 @@ document.addEventListener('DOMContentLoaded', function() {
   
   initializeTabs();
   loadEmails();
+  
+  // Add settings button event listeners
+  if (settingsBtn) {
+    settingsBtn.addEventListener('click', () => {
+      if (settingsModal) {
+        settingsModal.style.display = 'block';
+      }
+    });
+  }
+  
+  if (closeSettingsBtn) {
+    closeSettingsBtn.addEventListener('click', () => {
+      if (settingsModal) {
+        settingsModal.style.display = 'none';
+      }
+    });
+  }
+  
+  // Add main button event listeners that don't require pricing manager
+  if (autoScrollBtn) {
+    autoScrollBtn.addEventListener('click', () => {
+      if (!isAutoScrolling) {
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+          chrome.tabs.sendMessage(tabs[0].id, {action: 'startAutoScroll'});
+        });
+        autoScrollBtn.textContent = 'Stop Auto-Scroll';
+        autoScrollBtn.classList.add('btn-stop');
+        isAutoScrolling = true;
+      } else {
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+          chrome.tabs.sendMessage(tabs[0].id, {action: 'stopAutoScroll'});
+        });
+        autoScrollBtn.textContent = 'Start Auto-Scroll (Current Page)';
+        autoScrollBtn.classList.remove('btn-stop');
+        isAutoScrolling = false;
+      }
+    });
+  }
+  
+  // Add start search button event listener 
+  if (startSearchBtn) {
+    startSearchBtn.addEventListener('click', async () => {
+      const keywords = searchKeywords.value.trim();
+      const dateValue = dateFilter.value;
+      
+      if (!keywords) {
+        alert('Please enter search keywords!');
+        return;
+      }
+      
+      console.log('🔍 Start search clicked:', keywords);
+      
+      // Check usage limits if pricing manager is available
+      if (pricingManager) {
+        console.log('🔍 Checking search usage limits...');
+        await pricingManager.checkUsageAndProceed('search', () => {
+          executeSearch(keywords, dateValue);
+        });
+      } else {
+        console.log('⚠️ Pricing manager not available, executing search directly');
+        executeSearch(keywords, dateValue);
+      }
+    });
+  }
+  
+  // Add authenticate button event listener
+  if (authenticateBtn) {
+    authenticateBtn.addEventListener('click', () => {
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {action: 'authenticate'});
+      });
+    });
+  }
   
   // Force update usage display every 2 seconds
   setInterval(forceUsageDisplayUpdate, 2000);
