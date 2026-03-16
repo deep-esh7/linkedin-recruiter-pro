@@ -1,0 +1,38 @@
+# Environment variables and sensitive config
+.env
+config.js
+firebase-config-real.js
+
+# Test files with potential secrets
+test-*
+debug-*
+*-test.html
+
+# Build and package files
+dist/
+build/
+*.zip
+*.crx
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+console.log
+
+# Dependencies
+node_modules/
+
+# Sensitive documentation
+*secrets*
+*keys*
+*credentials*.claude/

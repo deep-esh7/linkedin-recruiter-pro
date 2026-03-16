@@ -176,11 +176,11 @@
       <h3>🔐 Razorpay Configuration</h3>
       <div class="form-group">
         <label>Razorpay Key ID:</label>
-        <input type="text" id="razorpayKeyId" placeholder="rzp_live_Rsmpg2dDv0X1KT">
+        <input type="text" id="razorpayKeyId" placeholder="YOUR_RAZORPAY_KEY_ID">
       </div>
       <div class="form-group">
         <label>Razorpay Secret Key:</label>
-        <input type="password" id="razorpaySecretKey" placeholder="naxBQ2qaAFkc36FZylpaqCUd">
+        <input type="password" id="razorpaySecretKey" placeholder="YOUR_RAZORPAY_SECRET_KEY">
       </div>
     </div>
 
@@ -221,7 +221,7 @@
   <script>
     // Firebase configuration
     const firebaseConfig = {
-      apiKey: "AIzaSyADwo_Xx7xK-ixiiKG53hBg7U4HAhq_fXc",
+      apiKey: "YOUR_FIREBASE_API_KEY",
       authDomain: "linked-in-recruiter-pro.firebaseapp.com",
       databaseURL: "https://linked-in-recruiter-pro-default-rtdb.asia-southeast1.firebasedatabase.app/",
       projectId: "linked-in-recruiter-pro",
@@ -258,8 +258,8 @@
           gmailFreeLimit.value = config.gmailFreeLimit || 5;
           weeklyPrice.value = config.weeklyPrice || 499;
           monthlyPrice.value = config.monthlyPrice || 1499;
-          razorpayKeyId.value = config.razorpayKeyId || 'rzp_live_Rsmpg2dDv0X1KT';
-          razorpaySecretKey.value = config.razorpaySecretKey || 'naxBQ2qaAFkc36FZylpaqCUd';
+          razorpayKeyId.value = config.razorpayKeyId || 'YOUR_RAZORPAY_KEY_ID';
+          razorpaySecretKey.value = config.razorpaySecretKey || 'YOUR_RAZORPAY_SECRET_KEY';
           
           showStatus('✅ Configuration loaded successfully!', 'success');
         } else {
@@ -280,8 +280,8 @@
           gmailFreeLimit: parseInt(gmailFreeLimit.value) || 5,
           weeklyPrice: parseInt(weeklyPrice.value) || 499,
           monthlyPrice: parseInt(monthlyPrice.value) || 1499,
-          razorpayKeyId: razorpayKeyId.value || 'rzp_live_Rsmpg2dDv0X1KT',
-          razorpaySecretKey: razorpaySecretKey.value || 'naxBQ2qaAFkc36FZylpaqCUd',
+          razorpayKeyId: razorpayKeyId.value || 'YOUR_RAZORPAY_KEY_ID',
+          razorpaySecretKey: razorpaySecretKey.value || 'YOUR_RAZORPAY_SECRET_KEY',
           updatedAt: Date.now()
         };
 

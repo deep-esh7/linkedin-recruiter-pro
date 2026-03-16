@@ -3,7 +3,7 @@
 
 class LocalFirebaseManager {
   constructor() {
-    this.apiKey = "AIzaSyADwo_Xx7xK-ixiiKG53hBg7U4HAhq_fXc";
+    this.apiKey = process.env.FIREBASE_API_KEY || "YOUR_FIREBASE_API_KEY";
     this.databaseURL = "https://linked-in-recruiter-pro-default-rtdb.asia-southeast1.firebasedatabase.app";
     this.projectId = "linked-in-recruiter-pro";
     this.initialized = false;
@@ -87,8 +87,8 @@ class LocalFirebaseManager {
       gmailFreeLimit: 5,
       weeklyPrice: 499,
       monthlyPrice: 1499,
-      razorpayKeyId: 'rzp_live_Rsmpg2dDv0X1KT',
-      razorpaySecretKey: 'naxBQ2qaAFkc36FZylpaqCUd'
+      razorpayKeyId: 'YOUR_RAZORPAY_KEY_ID',
+      razorpaySecretKey: 'YOUR_RAZORPAY_SECRET_KEY'
     };
   }
 

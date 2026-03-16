@@ -155,7 +155,7 @@ class PricingManager {
     
     try {
       const config = await this.firebaseManager.getAppConfig();
-      console.log('💳 PAYMENT DEBUG: Config loaded', config);
+      // Config loaded (don't log sensitive data)
       
       // Validate config
       if (!config.razorpayKeyId || config.razorpayKeyId === 'your_razorpay_key_here') {
@@ -188,7 +188,7 @@ class PricingManager {
         }
       };
 
-      console.log('💳 PAYMENT DEBUG: Razorpay options created', options);
+      // Payment options configured (don't log sensitive data)
       
       // Create wrapper if not exists
       if (!this.razorpayWrapper) {

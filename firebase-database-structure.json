@@ -4,8 +4,8 @@
     "gmailFreeLimit": 5,
     "weeklyPrice": 499,
     "monthlyPrice": 1499,
-    "razorpayKeyId": "rzp_live_Rsmpg2dDv0X1KT",
-    "razorpaySecretKey": "naxBQ2qaAFkc36FZylpaqCUd",
+    "razorpayKeyId": "YOUR_RAZORPAY_KEY_ID",
+    "razorpaySecretKey": "YOUR_RAZORPAY_SECRET_KEY",
     "features": {
       "unlimited_search": true,
       "unlimited_gmail": true,

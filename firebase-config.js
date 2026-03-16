@@ -2,7 +2,7 @@
 class FirebaseManager {
   constructor() {
     this.firebaseConfig = {
-      apiKey: "AIzaSyADwo_Xx7xK-ixiiKG53hBg7U4HAhq_fXc",
+      apiKey: process.env.FIREBASE_API_KEY || "YOUR_FIREBASE_API_KEY",
       authDomain: "linked-in-recruiter-pro.firebaseapp.com",
       databaseURL: "https://linked-in-recruiter-pro-default-rtdb.asia-southeast1.firebasedatabase.app/",
       projectId: "linked-in-recruiter-pro",
@@ -66,8 +66,8 @@ class FirebaseManager {
           gmailFreeLimit: config.gmailFreeLimit || 5,
           weeklyPrice: config.weeklyPrice || 499,
           monthlyPrice: config.monthlyPrice || 1499,
-          razorpayKeyId: config.razorpayKeyId || 'rzp_live_Rsmpg2dDv0X1KT',
-          razorpaySecretKey: config.razorpaySecretKey || 'naxBQ2qaAFkc36FZylpaqCUd',
+          razorpayKeyId: config.razorpayKeyId || 'YOUR_RAZORPAY_KEY_ID',
+          razorpaySecretKey: config.razorpaySecretKey || 'YOUR_RAZORPAY_SECRET_KEY',
           features: config.features || {
             unlimited_search: true,
             unlimited_gmail: true,
@@ -91,8 +91,8 @@ class FirebaseManager {
       gmailFreeLimit: 5,
       weeklyPrice: 499,
       monthlyPrice: 1499,
-      razorpayKeyId: 'rzp_live_Rsmpg2dDv0X1KT',
-      razorpaySecretKey: 'naxBQ2qaAFkc36FZylpaqCUd',
+      razorpayKeyId: 'YOUR_RAZORPAY_KEY_ID',
+      razorpaySecretKey: 'YOUR_RAZORPAY_SECRET_KEY',
       features: {
         unlimited_search: true,
         unlimited_gmail: true,
